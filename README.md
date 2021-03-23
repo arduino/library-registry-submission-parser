@@ -1,5 +1,6 @@
 # Arduino Library Manager submission parser
 
+[![Check Prettier Formatting status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-prettier-formatting.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-prettier-formatting.yml)
 [![Check General Formatting status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-general-formatting.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-general-formatting.yml)
 [![Spell Check status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/spell-check.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/spell-check.yml)
 [![Check License status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-license.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-license.yml)
