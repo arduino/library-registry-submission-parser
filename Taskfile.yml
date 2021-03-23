@@ -1,0 +1,44 @@
+# See: https://taskfile.dev/#/usage
+version: "3"
+
+vars:
+  DEFAULT_GO_PACKAGES:
+    sh: echo $(go list ./... | tr '\n' ' ')
+
+tasks:
+  go:build:
+    desc: Build the project
+    cmds:
+      - go build -v {{.GO_BUILD_FLAGS}}
+
+  go:check:
+    desc: Check for problems with Go code
+    deps:
+      - task: go:vet
+      - task: go:lint
+      - task: go:test
+
+  go:vet:
+    desc: Check for errors in Go code
+    cmds:
+      - go vet {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:lint:
+    desc: Lint Go code
+    cmds:
+      - go get golang.org/x/lint/golint
+      - |
+        GOLINT_PATH="$(go list -f '{{"{{"}}.Target{{"}}"}}' golang.org/x/lint/golint || echo "false")"
+        "$GOLINT_PATH" \
+          {{default "-min_confidence 0.8 -set_exit_status" .GO_LINT_FLAGS}} \
+          {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:test:
+    desc: Run unit tests
+    cmds:
+      - go test -v -short -run '{{default ".*" .GO_TEST_REGEX}}' {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} -coverprofile=coverage_unit.txt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:format:
+    desc: Format Go code
+    cmds:
+      - go fmt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
