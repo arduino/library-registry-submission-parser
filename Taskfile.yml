@@ -10,6 +10,7 @@ tasks:
     desc: Check for problems with the project
     deps:
       - task: go:test
+      - task: general:check-spelling
 
   go:build:
     desc: Build the project
@@ -21,3 +22,14 @@ tasks:
     cmds:
       - go test -v -short -run '{{default ".*" .GO_TEST_REGEX}}' {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} -coverprofile=coverage_unit.txt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
 
+  general:check-spelling:
+    desc: Check for commonly misspelled words
+    cmds:
+      - poetry install --no-root
+      - poetry run codespell {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
+
+  general:correct-spelling:
+    desc: Correct commonly misspelled words where possible
+    cmds:
+      - poetry install --no-root
+      - poetry run codespell --write-changes {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
