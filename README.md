@@ -1,5 +1,6 @@
 # Arduino Library Manager submission parser
 
+[![Check Prettier Formatting status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-prettier-formatting.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/check-prettier-formatting.yml)
 [![Spell Check status](https://github.com/arduino/library-manager-submission-parser/actions/workflows/spell-check.yml/badge.svg)](https://github.com/arduino/library-manager-submission-parser/actions/workflows/spell-check.yml)
 
 This is the tool used to parse submissions to [the Arduino Library Manager registry](https://github.com/arduino/library-manager-registry).
