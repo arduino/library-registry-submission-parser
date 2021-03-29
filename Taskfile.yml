@@ -5,6 +5,8 @@ vars:
   DEFAULT_GO_PACKAGES:
     sh: echo $(go list ./... | tr '\n' ' ')
 
+  PRETTIER: prettier@2.2.1
+
 tasks:
   check:
     desc: Check for problems with the project
@@ -21,6 +23,11 @@ tasks:
     desc: Run unit tests
     cmds:
       - go test -v -short -run '{{default ".*" .GO_TEST_REGEX}}' {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} -coverprofile=coverage_unit.txt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  general:format:
+    desc: Format all supported files with Prettier
+    cmds:
+      - npx {{.PRETTIER}} --write .
 
   general:check-spelling:
     desc: Check for commonly misspelled words
