@@ -11,8 +11,16 @@ tasks:
   check:
     desc: Check for problems with the project
     deps:
+      - task: go:vet
+      - task: go:lint
       - task: go:test
       - task: general:check-spelling
+
+  format:
+    desc: Format all files
+    deps:
+      - task: go:format
+      - task: general:format
 
   go:build:
     desc: Build the project
@@ -23,6 +31,26 @@ tasks:
     desc: Run unit tests
     cmds:
       - go test -v -short -run '{{default ".*" .GO_TEST_REGEX}}' {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} -coverprofile=coverage_unit.txt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:vet:
+    desc: Check for errors in Go code
+    cmds:
+      - go vet {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:lint:
+    desc: Lint Go code
+    cmds:
+      - go get golang.org/x/lint/golint
+      - |
+        GOLINT_PATH="$(go list -f '{{"{{"}}.Target{{"}}"}}' golang.org/x/lint/golint || echo "false")"
+        "$GOLINT_PATH" \
+          {{default "-min_confidence 0.8 -set_exit_status" .GO_LINT_FLAGS}} \
+          {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+
+  go:format:
+    desc: Format Go code
+    cmds:
+      - go fmt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
 
   general:format:
     desc: Format all supported files with Prettier
