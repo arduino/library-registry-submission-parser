@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "library-manager-submission-parser"
+name = "library-registry-submission-parser"
 version = "0.0.0"
 description = "Arduino Library Manager submission parser"
 authors = ["Arduino <info@arduino.cc>"]

@@ -1,4 +1,4 @@
-module github.com/arduino/library-manager-submission-parser/parser
+module github.com/arduino/library-registry-submission-parser/parser
 
 go 1.14
 
