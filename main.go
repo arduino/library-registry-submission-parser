@@ -246,7 +246,6 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 	// Check if the URL is already in the index.
 	listLines, err := listPath.ReadFileAsLines()
-	occurrences := 0
 	for _, listURL := range listLines {
 		listURLObject, err := url.Parse(strings.TrimSpace(listURL))
 		if err != nil {
@@ -255,11 +254,8 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 		normalizedListURLObject := normalizeURL(listURLObject)
 		if normalizedListURLObject.String() == normalizedURLObject.String() {
-			occurrences++
-			if occurrences > 1 {
-				submission.Error = "Submission URL is already in the Library Manager index."
-				return submission, ""
-			}
+			submission.Error = "Submission URL is already in the Library Manager index."
+			return submission, ""
 		}
 	}
 
