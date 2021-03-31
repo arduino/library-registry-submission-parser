@@ -7,11 +7,15 @@ on:
       - ".github/workflows/test-go.yml"
       - "Taskfile.yml"
       - "**.go"
+      - "go.mod"
+      - "go.sum"
   pull_request:
     paths:
       - ".github/workflows/test-go.yml"
       - "Taskfile.yml"
       - "**.go"
+      - "go.mod"
+      - "go.sum"
   workflow_dispatch:
   repository_dispatch:
 
