@@ -170,6 +170,21 @@ func Test_normalizeURL(t *testing.T) {
 	}
 }
 
+func Test_indexerLogsURL(t *testing.T) {
+	testTables := []struct {
+		testName               string
+		normalizedURL          string
+		expectedIndexerLogsURL string
+	}{
+		{"GitHub", "https://github.com/foo/bar.git", "http://downloads.arduino.cc/libraries/logs/github.com/foo/bar/"},
+		{"GitLab", "https://gitlab.com/yesbotics/libs/arduino/voltmeter.git", "http://downloads.arduino.cc/libraries/logs/gitlab.com/yesbotics/libs/arduino/voltmeter/"},
+	}
+
+	for _, testTable := range testTables {
+		assert.Equal(t, testTable.expectedIndexerLogsURL, indexerLogsURL(testTable.normalizedURL), testTable.testName)
+	}
+}
+
 func Test_uRLIsUnder(t *testing.T) {
 	testTables := []struct {
 		testName         string
