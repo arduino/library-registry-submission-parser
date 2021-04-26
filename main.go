@@ -59,9 +59,10 @@ var recommendedOrganizations []string = []string{
 
 // request is the type of the request data.
 type request struct {
-	Type        string           `json:"type"`        // Request type.
-	Submissions []submissionType `json:"submissions"` // Data for submitted libraries.
-	IndexEntry  string           `json:"indexEntry"`  // Entry that will be made to the Library Manager index source file when the submission is accepted.
+	Type            string           `json:"type"`            // Request type.
+	Submissions     []submissionType `json:"submissions"`     // Data for submitted libraries.
+	IndexEntry      string           `json:"indexEntry"`      // Entry that will be made to the Library Manager index source file when the submission is accepted.
+	IndexerLogsURLs string           `json:"indexerLogsURLs"` // List of URLs where the logs from the Library Manager indexer for each submission are available for view.
 }
 
 // submissionType is the type of the data for each individual library submitted in the request.
@@ -118,14 +119,19 @@ func main() {
 
 	// Process the submissions.
 	var indexEntries []string
+	var indexerLogsURLs []string
 	for _, submissionURL := range submissionURLs {
 		submission, indexEntry := populateSubmission(submissionURL, listPath)
 		req.Submissions = append(req.Submissions, submission)
 		indexEntries = append(indexEntries, indexEntry)
+		indexerLogsURLs = append(indexerLogsURLs, indexerLogsURL(submission.NormalizedURL))
 	}
 
 	// Assemble the index entry for the submissions.
 	req.IndexEntry = strings.Join(indexEntries, "%0A")
+
+	// Assemble the list of Library Manager indexer logs URLs for the submissions to show in the acceptance message.
+	req.IndexerLogsURLs = strings.Join(indexerLogsURLs, "%0A")
 
 	// Marshal the request data into a JSON document.
 	var marshalledRequest bytes.Buffer
@@ -357,6 +363,22 @@ func normalizeURL(rawURL *url.URL) url.URL {
 		Host:   rawURL.Host,
 		Path:   normalizedPath,
 	}
+}
+
+// indexerLogsURL returns the URL where the logs from the Library Manager indexer are available for view.
+func indexerLogsURL(normalizedURL string) string {
+	normalizedURLObject, err := url.Parse(normalizedURL)
+	if err != nil {
+		panic(err)
+	}
+
+	indexerLogsURLObject := url.URL{
+		Scheme: "http",
+		Host:   "downloads.arduino.cc",
+		Path:   "/libraries/logs/" + normalizedURLObject.Host + strings.TrimSuffix(normalizedURLObject.Path, ".git") + "/",
+	}
+
+	return indexerLogsURLObject.String()
 }
 
 func uRLIsUnder(childURL url.URL, parentCandidates []string) bool {
