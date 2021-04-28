@@ -243,7 +243,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	err = exec.Command("git", "ls-remote", normalizedURLObject.String()).Run()
 	if err != nil {
 		if _, ok := err.(*exec.ExitError); ok {
-			submission.Error = "Submission URL is not a Git clone URL (e.g., https://github.com/arduino-libraries/Servo)."
+			submission.Error = "Submission URL is not a Git clone URL (e.g., `https://github.com/arduino-libraries/Servo`)."
 			return submission, ""
 		}
 
