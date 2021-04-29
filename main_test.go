@@ -158,6 +158,8 @@ func Test_normalizeURL(t *testing.T) {
 		{".git suffix", "https://github.com/foo/bar.git", "https://github.com/foo/bar.git"},
 		{"http://", "http://github.com/foo/bar", "https://github.com/foo/bar.git"},
 		{"git://", "git://github.com/foo/bar", "https://github.com/foo/bar.git"},
+		{"Root URL", "https://github.com", "https://github.com/"},
+		{"Root URL with trailing slash", "https://github.com/", "https://github.com/"},
 	}
 
 	for _, testTable := range testTables {
@@ -196,6 +198,8 @@ func Test_uRLIsUnder(t *testing.T) {
 		{"Mismatch, root path", "https://github.com/foo/bar", []string{"example.com", "example.org"}, assert.False},
 		{"Match, subfolder", "https://github.com/foo/bar", []string{"example.com/foo", "github.com/foo"}, assert.True},
 		{"Mismatch, subfolder", "https://github.com/foo/bar", []string{"example.com/foo", "github.org/bar"}, assert.False},
+		{"Match, root child URL", "https://github.com/", []string{"example.com", "github.com"}, assert.True},
+		{"Mismatch, root child URL", "https://github.com/", []string{"example.com", "github.org"}, assert.False},
 	}
 
 	for _, testTable := range testTables {
