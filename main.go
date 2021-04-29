@@ -355,7 +355,10 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 // normalizeURL converts the URL into the standardized format used in the index.
 func normalizeURL(rawURL *url.URL) url.URL {
 	normalizedPath := strings.TrimRight(rawURL.Path, "/")
-	if !strings.HasSuffix(normalizedPath, ".git") {
+	if normalizedPath == "" {
+		// It doesn't make sense to add the extension to root URLs
+		normalizedPath = "/"
+	} else if !strings.HasSuffix(normalizedPath, ".git") {
 		normalizedPath += ".git"
 	}
 
@@ -392,11 +395,15 @@ func uRLIsUnder(childURL url.URL, parentCandidates []string) bool {
 			panic(err)
 		}
 
-		isUnderPath, err := paths.New(childURL.Path).IsInsideDir(paths.New(parentCandidateURL.Path))
+		childURLPath := paths.New(childURL.Path)
+		candidateURLPath := paths.New(parentCandidateURL.Path)
+
+		isUnderPath, err := childURLPath.IsInsideDir(candidateURLPath)
 		if err != nil {
 			panic(err)
 		}
-		if (childURL.Host == parentCandidateURL.Host) && isUnderPath {
+
+		if (childURL.Host == parentCandidateURL.Host) && (childURLPath.EqualsTo(candidateURLPath) || isUnderPath) {
 			return true
 		}
 	}
