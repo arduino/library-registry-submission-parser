@@ -129,6 +129,15 @@ func main() {
 		indexerLogsURLs = append(indexerLogsURLs, indexerLogsURL(submission.NormalizedURL))
 	}
 
+	// Check for duplicates within the submission itself.
+	submissionURLMap := make(map[string]bool)
+	for submissionIndex, submission := range req.Submissions {
+		submissionURLMap[submission.NormalizedURL] = true
+		if len(submissionURLMap) <= submissionIndex {
+			req.Submissions[submissionIndex].Error = "Submission contains duplicate URLs."
+		}
+	}
+
 	// Assemble the index entry for the submissions.
 	req.IndexEntry = strings.Join(indexEntries, "%0A")
 
