@@ -1,0 +1,8 @@
+diff --git a/repositories.txt b/repositories.txt
+deleted file mode 100644
+index c080a7a..0000000
+--- a/repositories.txt
++++ /dev/null
+@@ -1,2 +0,0 @@
+-https://github.com/arduino-libraries/Servo
+-https://github.com/arduino-libraries/Stepper

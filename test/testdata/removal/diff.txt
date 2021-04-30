@@ -1,0 +1,7 @@
+diff --git a/repositories.txt b/repositories.txt
+index c080a7a..6041f28 100644
+--- a/repositories.txt
++++ b/repositories.txt
+@@ -1,2 +1 @@
+-https://github.com/arduino-libraries/Servo
+ https://github.com/arduino-libraries/Stepper
