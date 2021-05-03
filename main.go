@@ -69,12 +69,13 @@ type request struct {
 
 // submissionType is the type of the data for each individual library submitted in the request.
 type submissionType struct {
-	SubmissionURL string `json:"submissionURL"` // Library repository URL as submitted by user. Used to identify the submission to the user.
-	NormalizedURL string `json:"normalizedURL"` // Submission URL in the standardized format that will be used in the index entry.
-	Name          string `json:"name"`          // Library name.
-	Official      bool   `json:"official"`      // Whether the library is official.
-	Tag           string `json:"tag"`           // Name of the submission repository's latest tag, which is used as the basis for the index entry and validation.
-	Error         string `json:"error"`         // Error message.
+	SubmissionURL  string `json:"submissionURL"`  // Library repository URL as submitted by user. Used to identify the submission to the user.
+	NormalizedURL  string `json:"normalizedURL"`  // Submission URL in the standardized format that will be used in the index entry.
+	RepositoryName string `json:"repositoryName"` // Name of the submission's repository.
+	Name           string `json:"name"`           // Library name.
+	Official       bool   `json:"official"`       // Whether the library is official.
+	Tag            string `json:"tag"`            // Name of the submission repository's latest tag, which is used as the basis for the index entry and validation.
+	Error          string `json:"error"`          // Error message.
 }
 
 // Command line flags.
@@ -264,6 +265,8 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 		panic(err)
 	}
+
+	submission.RepositoryName = strings.TrimSuffix(paths.New(normalizedURLObject.Path).Base(), ".git")
 
 	// Check if the URL is already in the index.
 	listLines, err := listPath.ReadFileAsLines()
