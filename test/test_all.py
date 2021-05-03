@@ -35,6 +35,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
                     "normalizedURL": "https://github.com/arduino-libraries/ArduinoCloudThing.git",
+                    "repositoryName": "ArduinoCloudThing",
                     "name": "ArduinoCloudThing",
                     "official": True,
                     "tag": "1.7.3",
@@ -51,6 +52,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "foo",
                     "normalizedURL": "",
+                    "repositoryName": "",
                     "name": "",
                     "official": False,
                     "tag": "",
@@ -67,6 +69,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "http://httpstat.us/404",
                     "normalizedURL": "",
+                    "repositoryName": "",
                     "name": "",
                     "official": False,
                     "tag": "",
@@ -83,6 +86,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://example.com",
                     "normalizedURL": "https://example.com/",
+                    "repositoryName": "",
                     "name": "",
                     "official": False,
                     "tag": "",
@@ -101,6 +105,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing/releases",
                     "normalizedURL": "https://github.com/arduino-libraries/ArduinoCloudThing/releases.git",
+                    "repositoryName": "",
                     "name": "",
                     "official": False,
                     "tag": "",
@@ -118,6 +123,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/Servo",
                     "normalizedURL": "https://github.com/arduino-libraries/Servo.git",
+                    "repositoryName": "Servo",
                     "name": "",
                     "official": False,
                     "tag": "",
@@ -134,6 +140,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
                     "normalizedURL": "https://github.com/arduino-libraries/ArduinoCloudThing.git",
+                    "repositoryName": "ArduinoCloudThing",
                     "name": "ArduinoCloudThing",
                     "official": True,
                     "tag": "1.7.3",
@@ -150,6 +157,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/Azure/azure-iot-arduino-utility",
                     "normalizedURL": "https://github.com/Azure/azure-iot-arduino-utility.git",
+                    "repositoryName": "azure-iot-arduino-utility",
                     "name": "AzureIoTUtility",
                     "official": False,
                     "tag": "v1.5.0",
@@ -166,6 +174,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/adafruit/Adafruit_TinyFlash",
                     "normalizedURL": "https://github.com/adafruit/Adafruit_TinyFlash.git",
+                    "repositoryName": "Adafruit_TinyFlash",
                     "name": "Adafruit TinyFlash",
                     "official": False,
                     "tag": "1.0.4",
@@ -182,6 +191,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library",
                     "normalizedURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library.git",
+                    "repositoryName": "SparkFun_Ublox_Arduino_Library",
                     "name": "SparkFun u-blox Arduino Library",
                     "official": False,
                     "tag": "v1.8.11",
@@ -199,6 +209,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino/cloud-examples",
                     "normalizedURL": "https://github.com/arduino/cloud-examples.git",
+                    "repositoryName": "cloud-examples",
                     "name": "",
                     "official": True,
                     "tag": "",
@@ -217,6 +228,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/WiFiLink-Firmware",
                     "normalizedURL": "https://github.com/arduino-libraries/WiFiLink-Firmware.git",
+                    "repositoryName": "WiFiLink-Firmware",
                     "name": "",
                     "official": True,
                     "tag": "1.0.1",
@@ -233,6 +245,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
                     "normalizedURL": "https://github.com/arduino-libraries/ArduinoCloudThing.git",
+                    "repositoryName": "ArduinoCloudThing",
                     "name": "ArduinoCloudThing",
                     "official": True,
                     "tag": "1.7.3",
@@ -241,6 +254,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
                     "normalizedURL": "https://github.com/arduino-libraries/ArduinoCloudThing.git",
+                    "repositoryName": "ArduinoCloudThing",
                     "name": "ArduinoCloudThing",
                     "official": True,
                     "tag": "1.7.3",
