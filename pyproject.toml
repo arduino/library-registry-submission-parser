@@ -5,7 +5,17 @@ description = "Arduino Library Manager submission parser"
 authors = ["Arduino <info@arduino.cc>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 
-[tool.poetry.dev-dependencies]
+# Integration tests dependencies.
+invoke = "1.4.1"
+pytest = "6.1.2"
+
+black = { version = "^21.4b2", allow-prereleases = true }
 codespell = ">=2.0.0"
+flake8 = "^3.9.1"
+pep8-naming = "^0.11.1"
+
+[tool.black]
+line-length = 120
+target-version = ["py39"]

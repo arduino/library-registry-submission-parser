@@ -1,0 +1,15 @@
+diff --git a/foo.txt b/foo.txt
+index 257cc56..3bd1f0e 100644
+--- a/foo.txt
++++ b/foo.txt
+@@ -1 +1,2 @@
+ foo
++bar
+diff --git a/repositories.txt b/repositories.txt
+index c080a7a..9a6503b 100644
+--- a/repositories.txt
++++ b/repositories.txt
+@@ -1,2 +1,3 @@
++https://github.com/arduino-libraries/ArduinoCloudThing
+ https://github.com/arduino-libraries/Servo
+ https://github.com/arduino-libraries/Stepper
