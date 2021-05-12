@@ -28,7 +28,7 @@ jobs:
         run: task go:build
 
       - name: Create Github Release and upload artifacts
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.8.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: parser
