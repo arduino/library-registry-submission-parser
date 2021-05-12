@@ -3,6 +3,6 @@ index c080a7a..dcba162 100644
 --- a/repositories.txt
 +++ b/repositories.txt
 @@ -1,2 +1,3 @@
-+https://github.com/Azure/azure-iot-arduino-utility
++https://github.com/ms-iot/virtual-shields-arduino
  https://github.com/arduino-libraries/Servo
  https://github.com/arduino-libraries/Stepper
