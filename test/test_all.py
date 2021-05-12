@@ -155,17 +155,17 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
             "submission",
             [
                 {
-                    "submissionURL": "https://github.com/Azure/azure-iot-arduino-utility",
-                    "normalizedURL": "https://github.com/Azure/azure-iot-arduino-utility.git",
-                    "repositoryName": "azure-iot-arduino-utility",
-                    "name": "AzureIoTUtility",
+                    "submissionURL": "https://github.com/ms-iot/virtual-shields-arduino",
+                    "normalizedURL": "https://github.com/ms-iot/virtual-shields-arduino.git",
+                    "repositoryName": "virtual-shields-arduino",
+                    "name": "Windows Virtual Shields for Arduino",
                     "official": False,
-                    "tag": "v1.5.0",
+                    "tag": "v1.2.0",
                     "error": "",
                 }
             ],
-            "https://github.com/Azure/azure-iot-arduino-utility.git|Partner|AzureIoTUtility",
-            "http://downloads.arduino.cc/libraries/logs/github.com/Azure/azure-iot-arduino-utility/",
+            "https://github.com/ms-iot/virtual-shields-arduino.git|Partner|Windows Virtual Shields for Arduino",
+            "http://downloads.arduino.cc/libraries/logs/github.com/ms-iot/virtual-shields-arduino/",
         ),
         (
             "type-recommended",

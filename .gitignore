@@ -4,6 +4,7 @@ parser.exe
 
 # Test artifacts
 coverage_unit.txt
+__pycache__/
 
 # IDEs
 .idea/
