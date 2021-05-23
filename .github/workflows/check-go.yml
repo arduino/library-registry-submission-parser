@@ -6,11 +6,15 @@ on:
     paths:
       - ".github/workflows/check-go.yml"
       - "Taskfile.yml"
+      - "go.mod"
+      - "go.sum"
       - "**.go"
   pull_request:
     paths:
       - ".github/workflows/check-go.yml"
       - "Taskfile.yml"
+      - "go.mod"
+      - "go.sum"
       - "**.go"
   schedule:
     # Run every Tuesday at 8 AM UTC to catch breakage caused by changes to tools.

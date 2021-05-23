@@ -9,6 +9,7 @@ on:
       - "**/poetry.lock"
       - "**/pyproject.toml"
       - "**/setup.cfg"
+      - "Taskfile.ya?ml"
       - "**/tox.ini"
       - "**.py"
   pull_request:
@@ -18,6 +19,7 @@ on:
       - "**/poetry.lock"
       - "**/pyproject.toml"
       - "**/setup.cfg"
+      - "Taskfile.ya?ml"
       - "**/tox.ini"
       - "**.py"
   workflow_dispatch:
