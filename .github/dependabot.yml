@@ -10,3 +10,17 @@ updates:
       interval: daily
     labels:
       - "topic: infrastructure"
+  # Go dependencies
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: daily
+    labels:
+      - "topic: infrastructure"
+  # Python dependencies
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: daily
+    labels:
+      - "topic: infrastructure"
