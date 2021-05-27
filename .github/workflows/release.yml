@@ -10,8 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set environment variables
+        run: |
+          # See: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+          echo "CHANGELOG_PATH=${{ runner.temp }}/CHANGELOG.md" >> "$GITHUB_ENV"
+
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install Taskfile
         uses: arduino/setup-task@v1
@@ -27,8 +34,17 @@ jobs:
       - name: Build project
         run: task go:build
 
+      - name: Create changelog
+        uses: arduino/create-changelog@v1
+        with:
+          tag-regex: '^[0-9]+\.[0-9]+\.[0-9]+.*$'
+          filter-regex: '^\[(skip|changelog)[ ,-](skip|changelog)\].*'
+          case-insensitive-regex: true
+          changelog-file-path: ${{ env.CHANGELOG_PATH }}
+
       - name: Create Github Release and upload artifacts
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: ${{ env.CHANGELOG_PATH }}
           artifacts: parser
