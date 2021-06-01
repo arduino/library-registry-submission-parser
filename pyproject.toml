@@ -11,7 +11,7 @@ python = "^3.9"
 invoke = "1.5.0"
 pytest = "6.2.4"
 
-black = { version = "^21.5b1", allow-prereleases = true }
+black = { version = "^21.5b2", allow-prereleases = true }
 codespell = ">=2.0.0"
 flake8 = "^3.9.2"
 pep8-naming = "^0.11.1"
