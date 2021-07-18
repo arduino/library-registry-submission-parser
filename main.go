@@ -260,7 +260,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 	// Check if URL is from a supported Git host.
 	if !uRLIsUnder(normalizedURLObject, supportedHosts) {
-		submission.Error = normalizedURLObject.Host + " is not currently supported as a Git hosting website for Library Manager.%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-library-to-be-added-to-library-manager"
+		submission.Error = normalizedURLObject.Host + " is not currently supported as a Git hosting website for Library Manager.%0A%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-library-to-be-added-to-library-manager"
 		return submission, ""
 	}
 

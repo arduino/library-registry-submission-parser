@@ -91,8 +91,8 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                     "official": False,
                     "tag": "",
                     "error": "example.com is not currently supported as a Git hosting website for Library Manager.%0A"
-                    "See: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-"
-                    "library-to-be-added-to-library-manager",
+                    "%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for"
+                    "-a-library-to-be-added-to-library-manager",
                 }
             ],
             "",
