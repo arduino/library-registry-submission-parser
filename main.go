@@ -350,18 +350,18 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	// Get submission library name. It is necessary to record this in the index source entry because the library is locked to this name.
 	libraryPropertiesPath := submissionClonePath.Join("library.properties")
 	if !libraryPropertiesPath.Exist() {
-		submission.Error = "Library is missing a library.properties metadata file."
+		submission.Error = "Library is missing a library.properties metadata file.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
 		return submission, ""
 	}
 	libraryProperties, err := properties.LoadFromPath(libraryPropertiesPath)
 	if err != nil {
-		submission.Error = fmt.Sprintf("Invalid library.properties file (%s)", err)
+		submission.Error = fmt.Sprintf("Invalid library.properties file: %s%%0A%%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata", err)
 		return submission, ""
 	}
 	var ok bool
 	submission.Name, ok = libraryProperties.GetOk("name")
 	if !ok {
-		submission.Error = "library.properties is missing a name field"
+		submission.Error = "library.properties is missing a name field.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
 		return submission, ""
 	}
 

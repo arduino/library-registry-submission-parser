@@ -232,7 +232,8 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                     "name": "",
                     "official": True,
                     "tag": "1.0.1",
-                    "error": "Library is missing a library.properties metadata file.",
+                    "error": "Library is missing a library.properties metadata file.%0A%0A"
+                    "See: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata",
                 }
             ],
             "",
