@@ -149,6 +149,8 @@ func main() {
 	}
 
 	// Assemble the index entry for the submissions.
+	// Note: %0A must be used for line breaks in all strings that will be used as step/job outputs in the GitHub Actions
+	// workflow. In that application, any text following \n is discarded.
 	req.IndexEntry = strings.Join(indexEntries, "%0A")
 
 	// Assemble the list of Library Manager indexer logs URLs for the submissions to show in the acceptance message.
