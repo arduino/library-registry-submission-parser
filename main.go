@@ -149,6 +149,8 @@ func main() {
 	}
 
 	// Assemble the index entry for the submissions.
+	// Note: %0A must be used for line breaks in all strings that will be used as step/job outputs in the GitHub Actions
+	// workflow. In that application, any text following \n is discarded.
 	req.IndexEntry = strings.Join(indexEntries, "%0A")
 
 	// Assemble the list of Library Manager indexer logs URLs for the submissions to show in the acceptance message.
@@ -260,7 +262,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 	// Check if URL is from a supported Git host.
 	if !uRLIsUnder(normalizedURLObject, supportedHosts) {
-		submission.Error = normalizedURLObject.Host + " is not currently supported as a Git hosting website for Library Manager.%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-library-to-be-added-to-library-manager"
+		submission.Error = fmt.Sprintf("`%s` is not currently supported as a Git hosting website for Library Manager.%%0A%%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-library-to-be-added-to-library-manager", normalizedURLObject.Host)
 		return submission, ""
 	}
 
@@ -350,18 +352,18 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	// Get submission library name. It is necessary to record this in the index source entry because the library is locked to this name.
 	libraryPropertiesPath := submissionClonePath.Join("library.properties")
 	if !libraryPropertiesPath.Exist() {
-		submission.Error = "Library is missing a library.properties metadata file."
+		submission.Error = "Library is missing a library.properties metadata file.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
 		return submission, ""
 	}
 	libraryProperties, err := properties.LoadFromPath(libraryPropertiesPath)
 	if err != nil {
-		submission.Error = fmt.Sprintf("Invalid library.properties file (%s)", err)
+		submission.Error = fmt.Sprintf("Invalid library.properties file: %s%%0A%%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata", err)
 		return submission, ""
 	}
 	var ok bool
 	submission.Name, ok = libraryProperties.GetOk("name")
 	if !ok {
-		submission.Error = "library.properties is missing a name field"
+		submission.Error = "library.properties is missing a name field.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
 		return submission, ""
 	}
 

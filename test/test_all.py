@@ -90,9 +90,9 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                     "name": "",
                     "official": False,
                     "tag": "",
-                    "error": "example.com is not currently supported as a Git hosting website for Library Manager.%0A"
-                    "See: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-"
-                    "library-to-be-added-to-library-manager",
+                    "error": "`example.com` is not currently supported as a Git hosting website for Library Manager.%0A"
+                    "%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for"
+                    "-a-library-to-be-added-to-library-manager",
                 }
             ],
             "",
@@ -232,7 +232,8 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
                     "name": "",
                     "official": True,
                     "tag": "1.0.1",
-                    "error": "Library is missing a library.properties metadata file.",
+                    "error": "Library is missing a library.properties metadata file.%0A%0A"
+                    "See: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata",
                 }
             ],
             "",
