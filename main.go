@@ -74,6 +74,7 @@ type request struct {
 	Submissions                      []submissionType `json:"submissions"`                      // Data for submitted libraries.
 	IndexEntry                       string           `json:"indexEntry"`                       // Entry that will be made to the Library Manager index source file when the submission is accepted.
 	IndexerLogsURLs                  string           `json:"indexerLogsURLs"`                  // List of URLs where the logs from the Library Manager indexer for each submission are available for view.
+	Error                            string           `json:"error"`                            // Error message.
 }
 
 // submissionType is the type of the data for each individual library submitted in the request.
@@ -127,7 +128,7 @@ func main() {
 	}
 	var req request
 	var submissionURLs []string
-	req.Type, req.ArduinoLintLibraryManagerSetting, submissionURLs = parseDiff(rawDiff, *listNameArgument)
+	req.Type, req.Error, req.ArduinoLintLibraryManagerSetting, submissionURLs = parseDiff(rawDiff, *listNameArgument)
 
 	// Process the submissions.
 	var indexEntries []string
@@ -177,9 +178,15 @@ func errorExit(message string) {
 	os.Exit(1)
 }
 
-// parseDiff parses the request diff and returns the request type, `arduino-lint --library-manager` setting, and list of submission URLs.
-func parseDiff(rawDiff []byte, listName string) (string, string, []string) {
+// parseDiff parses the request diff and returns the request type, request error, `arduino-lint --library-manager` setting, and list of submission URLs.
+func parseDiff(rawDiff []byte, listName string) (string, string, string, []string) {
 	var submissionURLs []string
+
+	// Check if the PR has removed the final newline from a file, which would cause a spurious diff for the next PR if merged.
+	// Unfortunately, the diff package does not have this capability (only to detect missing newline in the original file).
+	if bytes.Contains(rawDiff, []byte("\\ No newline at end of file")) {
+		return "invalid", "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.", "", nil
+	}
 
 	diffs, err := diff.ParseMultiFileDiff(rawDiff)
 	if err != nil {
@@ -188,7 +195,7 @@ func parseDiff(rawDiff []byte, listName string) (string, string, []string) {
 
 	if (len(diffs) != 1) || (diffs[0].OrigName[2:] != listName) || (diffs[0].OrigName[2:] != diffs[0].NewName[2:]) { // Git diffs have a a/ or b/ prefix on file names.
 		// This is not a Library Manager submission.
-		return "other", "", nil
+		return "other", "", "", nil
 	}
 
 	var addedCount int
@@ -227,7 +234,7 @@ func parseDiff(rawDiff []byte, listName string) (string, string, []string) {
 		arduinoLintLibraryManagerSetting = "update"
 	}
 
-	return requestType, arduinoLintLibraryManagerSetting, submissionURLs
+	return requestType, "", arduinoLintLibraryManagerSetting, submissionURLs
 }
 
 // populateSubmission does the checks on the submission that aren't provided by Arduino Lint and gathers the necessary data on it.
