@@ -21,16 +21,30 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
 
 
 @pytest.mark.parametrize(
-    "repopath_folder_name, expected_type, expected_submissions, expected_indexentry, expected_indexerlogsurls",
+    "repopath_folder_name,"
+    "expected_type,"
+    "expected_error,"
+    "expected_submissions,"
+    "expected_indexentry,"
+    "expected_indexerlogsurls",
     [
-        ("list-deleted-diff", "other", None, "", ""),
-        ("multi-file-diff", "other", None, "", ""),
-        ("non-list-diff", "other", None, "", ""),
-        ("list-rename-diff", "other", None, "", ""),
-        ("removal", "removal", None, "", ""),
+        ("list-deleted-diff", "other", "", None, "", ""),
+        ("multi-file-diff", "other", "", None, "", ""),
+        ("non-list-diff", "other", "", None, "", ""),
+        ("list-rename-diff", "other", "", None, "", ""),
+        (
+            "no-final-newline-diff",
+            "invalid",
+            "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.",
+            None,
+            "",
+            "",
+        ),
+        ("removal", "removal", "", None, "", ""),
         (
             "modification",
             "modification",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
@@ -48,6 +62,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "url-error",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "foo",
@@ -65,6 +80,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "url-404",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "http://httpstat.us/404",
@@ -82,6 +98,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "not-supported-git-host",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://example.com",
@@ -101,6 +118,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "not-git-clone-url",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing/releases",
@@ -119,6 +137,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "already-in-library-manager",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/Servo",
@@ -136,6 +155,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-arduino",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
@@ -153,6 +173,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-partner",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/ms-iot/virtual-shields-arduino",
@@ -170,6 +191,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-recommended",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/adafruit/Adafruit_TinyFlash",
@@ -187,6 +209,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-contributed",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library",
@@ -205,6 +228,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "no-tags",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino/cloud-examples",
@@ -224,6 +248,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "no-library-properties",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/WiFiLink-Firmware",
@@ -242,6 +267,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "duplicates-in-submission",
             "submission",
+            "",
             [
                 {
                     "submissionURL": "https://github.com/arduino-libraries/ArduinoCloudThing",
@@ -273,6 +299,7 @@ def test_request(
     run_command,
     repopath_folder_name,
     expected_type,
+    expected_error,
     expected_submissions,
     expected_indexentry,
     expected_indexerlogsurls,
@@ -286,6 +313,7 @@ def test_request(
 
     request = json.loads(result.stdout)
     assert request["type"] == expected_type
+    assert request["error"] == expected_error
     assert request["submissions"] == expected_submissions
     assert request["indexEntry"] == expected_indexentry
     assert request["submissions"] == expected_submissions

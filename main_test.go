@@ -46,8 +46,9 @@ index cff484d..e14c179 100644
 +https://github.com/foo/bar
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs := parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs := parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "other", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
 	assert.Nil(t, submissionURLs, testName)
 
@@ -62,8 +63,9 @@ index d4edde0..807b76d 100644
 +hello
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "other", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
 	assert.Nil(t, submissionURLs, testName)
 
@@ -80,8 +82,9 @@ index cff484d..e14c179 100644
 +https://github.com/foo/bar
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "other", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
 	assert.Nil(t, submissionURLs, testName)
 
@@ -96,8 +99,9 @@ index cff484d..9f67763 100644
 +https://github.com/foo/baz
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "submission", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "submit", arduinoLintLibraryManagerSetting, testName)
 	assert.ElementsMatch(t, submissionURLs, []string{"https://github.com/foo/bar", "https://github.com/foo/baz"}, testName)
 
@@ -112,10 +116,11 @@ index cff484d..1b0b80b 100644
 \ No newline at end of file
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
-	assert.Equal(t, "submission", requestType, testName)
-	assert.Equal(t, "submit", arduinoLintLibraryManagerSetting, testName)
-	assert.ElementsMatch(t, submissionURLs, []string{"https://github.com/foo/bar"}, testName)
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	assert.Equal(t, "invalid", requestType, testName)
+	assert.Equal(t, "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.", requestError, testName)
+	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
+	assert.Nil(t, submissionURLs, testName)
 
 	testName = "Submission w/ blank line"
 	diff = []byte(`
@@ -125,11 +130,12 @@ index cff484d..1b0b80b 100644
 +++ b/repositories.txt
 @@ -3391,0 +3392 @@ https://github.com/lbernstone/plotutils
 +https://github.com/foo/bar
-\ No newline at end of file
++
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "submission", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "submit", arduinoLintLibraryManagerSetting, testName)
 	assert.ElementsMatch(t, submissionURLs, []string{"https://github.com/foo/bar"}, testName)
 
@@ -143,8 +149,9 @@ index cff484d..38e11d8 100644
 -https://github.com/arduino-libraries/Ethernet
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "removal", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
 	assert.Nil(t, submissionURLs, testName)
 
@@ -159,8 +166,9 @@ index cff484d..8b401a1 100644
 +https://github.com/foo/bar
 `)
 
-	requestType, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
 	assert.Equal(t, "modification", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "update", arduinoLintLibraryManagerSetting, testName)
 	assert.Equal(t, submissionURLs, []string{"https://github.com/foo/bar"}, testName)
 }
