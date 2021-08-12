@@ -2,6 +2,7 @@
 
 [![Test Go status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/test-go-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/test-go-task.yml)
 [![Codecov](https://codecov.io/gh/arduino/library-registry-submission-parser/branch/main/graph/badge.svg)](https://codecov.io/gh/arduino/library-registry-submission-parser)
+[![Test Integration status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/test-go-integration-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/test-go-integration-task.yml)
 [![Check Go status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-go.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-go.yml)
 [![Check Python status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-python-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-python-task.yml)
 [![Check Prettier Formatting status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-prettier-formatting-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-prettier-formatting-task.yml)
