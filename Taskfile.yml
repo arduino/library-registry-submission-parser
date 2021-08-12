@@ -49,10 +49,13 @@ tasks:
   go:lint:
     desc: Lint Go code
     cmds:
-      - go get golang.org/x/lint/golint
       - |
-        GOLINT_PATH="$(go list -f '{{"{{"}}.Target{{"}}"}}' golang.org/x/lint/golint || echo "false")"
-        "$GOLINT_PATH" \
+        if ! which golint &>/dev/null; then
+          echo "golint not installed or not in PATH. Please install: https://github.com/golang/lint#installation"
+          exit 1
+        fi
+      - |
+        golint \
           {{default "-min_confidence 0.8 -set_exit_status" .GO_LINT_FLAGS}} \
           {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
 

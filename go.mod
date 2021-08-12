@@ -1,6 +1,6 @@
 module github.com/arduino/library-registry-submission-parser/parser
 
-go 1.14
+go 1.16
 
 require (
 	github.com/arduino/go-paths-helper v1.6.1
