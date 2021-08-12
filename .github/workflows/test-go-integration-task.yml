@@ -10,7 +10,7 @@ env:
 on:
   push:
     paths:
-      - ".github/workflows/test-integration.yml"
+      - ".github/workflows/test-go-integration-task.yml"
       - "Taskfile.yml"
       - "**.go"
       - "go.mod"
@@ -20,7 +20,7 @@ on:
       - "test/**"
   pull_request:
     paths:
-      - ".github/workflows/test-integration.yml"
+      - ".github/workflows/test-go-integration-task.yml"
       - "Taskfile.yml"
       - "**.go"
       - "go.mod"
