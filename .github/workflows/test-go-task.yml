@@ -9,20 +9,20 @@ on:
   push:
     paths:
       - ".github/workflows/test-go-task.ya?ml"
-      - "Taskfile.ya?ml"
-      - "**.go"
       - "codecov.ya?ml"
       - "go.mod"
       - "go.sum"
+      - "Taskfile.ya?ml"
+      - "**.go"
       - "**/testdata/**"
   pull_request:
     paths:
       - ".github/workflows/test-go-task.ya?ml"
-      - "Taskfile.ya?ml"
-      - "**.go"
       - "codecov.ya?ml"
       - "go.mod"
       - "go.sum"
+      - "Taskfile.ya?ml"
+      - "**.go"
       - "**/testdata/**"
   workflow_dispatch:
   repository_dispatch:
