@@ -35,9 +35,10 @@ tasks:
 
   go:test-integration:
     desc: Run integration tests
+    deps:
+      - task: poetry:install-deps
     cmds:
       - task: go:build
-      - poetry install --no-root
       - poetry run pytest test
 
   go:vet:
@@ -60,16 +61,24 @@ tasks:
     cmds:
       - go fmt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
 
-  python:lint:
-    desc: Lint Python code
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/poetry-task/Taskfile.yml
+  poetry:install-deps:
+    desc: Install dependencies managed by Poetry
     cmds:
       - poetry install --no-root
+
+  python:lint:
+    desc: Lint Python code
+    deps:
+      - task: poetry:install-deps
+    cmds:
       - poetry run flake8 --show-source
 
   python:format:
     desc: Automatically formats Python files
+    deps:
+      - task: poetry:install-deps
     cmds:
-      - poetry install --no-root
       - poetry run black .
 
   # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/check-prettier-formatting-task/Taskfile.yml
@@ -80,12 +89,14 @@ tasks:
 
   general:check-spelling:
     desc: Check for commonly misspelled words
+    deps:
+      - task: poetry:install-deps
     cmds:
-      - poetry install --no-root
       - poetry run codespell {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
 
   general:correct-spelling:
     desc: Correct commonly misspelled words where possible
+    deps:
+      - task: poetry:install-deps
     cmds:
-      - poetry install --no-root
       - poetry run codespell --write-changes {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
