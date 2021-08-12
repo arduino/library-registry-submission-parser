@@ -8,15 +8,15 @@ env:
 on:
   push:
     paths:
-      - ".github/workflows/test-go-task.yml"
-      - "Taskfile.yml"
+      - ".github/workflows/test-go-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
       - "go.mod"
       - "go.sum"
   pull_request:
     paths:
-      - ".github/workflows/test-go-task.yml"
-      - "Taskfile.yml"
+      - ".github/workflows/test-go-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
       - "go.mod"
       - "go.sum"
