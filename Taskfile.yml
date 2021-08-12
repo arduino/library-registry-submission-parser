@@ -94,11 +94,11 @@ tasks:
     deps:
       - task: poetry:install-deps
     cmds:
-      - poetry run codespell {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
+      - poetry run codespell
 
   general:correct-spelling:
     desc: Correct commonly misspelled words where possible
     deps:
       - task: poetry:install-deps
     cmds:
-      - poetry run codespell --write-changes {{.CODESPELL_SKIP_OPTION}} {{.CODESPELL_IGNORE_WORDS_OPTION}}
+      - poetry run codespell --write-changes
