@@ -14,6 +14,7 @@ on:
       - "codecov.ya?ml"
       - "go.mod"
       - "go.sum"
+      - "**/testdata/**"
   pull_request:
     paths:
       - ".github/workflows/test-go-task.ya?ml"
@@ -22,6 +23,7 @@ on:
       - "codecov.ya?ml"
       - "go.mod"
       - "go.sum"
+      - "**/testdata/**"
   workflow_dispatch:
   repository_dispatch:
 
