@@ -28,10 +28,18 @@ tasks:
     cmds:
       - go build -v {{.GO_BUILD_FLAGS}}
 
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/test-go-task/Taskfile.yml
   go:test:
     desc: Run unit tests
     cmds:
-      - go test -v -short -run '{{default ".*" .GO_TEST_REGEX}}' {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} -coverprofile=coverage_unit.txt {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
+      - |
+        go test \
+          -v \
+          -short \
+          -run '{{default ".*" .GO_TEST_REGEX}}' \
+          {{default "-timeout 10m -coverpkg=./... -covermode=atomic" .GO_TEST_FLAGS}} \
+          -coverprofile=coverage_unit.txt \
+          {{default .DEFAULT_GO_PACKAGES .GO_PACKAGES}}
 
   go:test-integration:
     desc: Run integration tests
