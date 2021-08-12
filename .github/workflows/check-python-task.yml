@@ -4,7 +4,7 @@ name: Check Python
 on:
   push:
     paths:
-      - ".github/workflows/check-python.yml"
+      - ".github/workflows/check-python-task.yml"
       - "**/.flake8"
       - "**/poetry.lock"
       - "**/pyproject.toml"
@@ -14,7 +14,7 @@ on:
       - "**.py"
   pull_request:
     paths:
-      - ".github/workflows/check-python.yml"
+      - ".github/workflows/check-python-task.yml"
       - "**/.flake8"
       - "**/poetry.lock"
       - "**/pyproject.toml"
