@@ -28,6 +28,7 @@ tasks:
     cmds:
       - go build -v {{.GO_BUILD_FLAGS}}
 
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/test-go-task/Taskfile.yml
   go:test:
     desc: Run unit tests
     cmds:
