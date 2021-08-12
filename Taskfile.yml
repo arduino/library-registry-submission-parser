@@ -75,7 +75,7 @@ tasks:
       - poetry run flake8 --show-source
 
   python:format:
-    desc: Automatically formats Python files
+    desc: Format Python files
     deps:
       - task: poetry:install-deps
     cmds:
