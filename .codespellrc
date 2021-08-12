@@ -5,4 +5,4 @@ ignore-words-list = ,
 builtin = clear,informal,en-GB_to_en-US
 check-filenames =
 check-hidden =
-skip = ./.git,go.mod,go.sum,parser,parser.exe
+skip = ./.git,./go.mod,./go.sum,./package-lock.json,./poetry.lock,./yarn.lock
