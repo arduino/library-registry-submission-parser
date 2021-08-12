@@ -5,8 +5,6 @@ vars:
   DEFAULT_GO_PACKAGES:
     sh: echo $(go list ./... | tr '\n' ' ')
 
-  PRETTIER: prettier@2.2.1
-
 tasks:
   check:
     desc: Check for problems with the project
@@ -77,7 +75,7 @@ tasks:
   general:format:
     desc: Format all supported files with Prettier
     cmds:
-      - npx {{.PRETTIER}} --write .
+      - npx prettier --write .
 
   general:check-spelling:
     desc: Check for commonly misspelled words
