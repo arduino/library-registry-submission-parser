@@ -47,7 +47,7 @@ tasks:
       - task: poetry:install-deps
     cmds:
       - task: go:build
-      - poetry run pytest test
+      - poetry run pytest tests
 
   go:vet:
     desc: Check for errors in Go code
