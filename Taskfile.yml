@@ -67,6 +67,7 @@ tasks:
     cmds:
       - poetry install --no-root
 
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/check-python-task/Taskfile.yml
   python:lint:
     desc: Lint Python code
     deps:
@@ -74,6 +75,7 @@ tasks:
     cmds:
       - poetry run flake8 --show-source
 
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/check-python-task/Taskfile.yml
   python:format:
     desc: Format Python files
     deps:
