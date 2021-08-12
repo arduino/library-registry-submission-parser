@@ -21,7 +21,7 @@ tasks:
     deps:
       - task: go:format
       - task: python:format
-      - task: general:format
+      - task: general:format-prettier
 
   go:build:
     desc: Build the project
@@ -72,7 +72,7 @@ tasks:
       - poetry install --no-root
       - poetry run black .
 
-  general:format:
+  general:format-prettier:
     desc: Format all supported files with Prettier
     cmds:
       - npx prettier --write .
