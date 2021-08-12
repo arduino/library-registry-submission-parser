@@ -24,7 +24,7 @@ tasks:
       - task: general:format-prettier
 
   go:build:
-    desc: Build the project
+    desc: Build the Go code
     cmds:
       - go build -v {{.GO_BUILD_FLAGS}}
 
