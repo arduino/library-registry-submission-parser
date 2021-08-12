@@ -1,10 +1,12 @@
+# Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/check-prettier-formatting-task.md
 name: Check Prettier Formatting
 
 # See: https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
 on:
   push:
     paths:
-      - ".github/workflows/check-prettier-formatting.yml"
+      - ".github/workflows/check-prettier-formatting-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**/.prettierignore"
       - "**/.prettierrc*"
       # CSS
@@ -99,7 +101,8 @@ on:
       - "**.syntax"
   pull_request:
     paths:
-      - ".github/workflows/check-prettier-formatting.yml"
+      - ".github/workflows/check-prettier-formatting-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**/.prettierignore"
       - "**/.prettierrc*"
       # CSS
@@ -206,14 +209,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Taskfile
+      - name: Install Task
         uses: arduino/setup-task@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           version: 3.x
 
       - name: Format with Prettier
-        run: task general:format
+        run: task general:format-prettier
 
       - name: Check formatting
         run: git diff --color --exit-code

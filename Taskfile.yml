@@ -5,8 +5,6 @@ vars:
   DEFAULT_GO_PACKAGES:
     sh: echo $(go list ./... | tr '\n' ' ')
 
-  PRETTIER: prettier@2.2.1
-
 tasks:
   check:
     desc: Check for problems with the project
@@ -23,7 +21,7 @@ tasks:
     deps:
       - task: go:format
       - task: python:format
-      - task: general:format
+      - task: general:format-prettier
 
   go:build:
     desc: Build the project
@@ -74,10 +72,11 @@ tasks:
       - poetry install --no-root
       - poetry run black .
 
-  general:format:
+  # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/check-prettier-formatting-task/Taskfile.yml
+  general:format-prettier:
     desc: Format all supported files with Prettier
     cmds:
-      - npx {{.PRETTIER}} --write .
+      - npx prettier --write .
 
   general:check-spelling:
     desc: Check for commonly misspelled words
