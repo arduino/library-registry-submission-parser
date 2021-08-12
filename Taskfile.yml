@@ -26,7 +26,7 @@ tasks:
   go:build:
     desc: Build the Go code
     cmds:
-      - go build -v {{.GO_BUILD_FLAGS}}
+      - go build -v {{.LDFLAGS}}
 
   # Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/assets/test-go-task/Taskfile.yml
   go:test:
