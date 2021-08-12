@@ -66,8 +66,11 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           version: 3.x
 
+      - name: Install golint
+        run: go install golang.org/x/lint/golint@latest
+
       - name: Check style
-        run: task go:lint
+        run: task --silent go:lint
 
   check-formatting:
     runs-on: ubuntu-latest
