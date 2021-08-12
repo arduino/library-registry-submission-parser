@@ -1,3 +1,4 @@
+# Source: https://github.com/arduino/tooling-project-assets/blob/main/workflow-templates/test-go-integration-task.md
 name: Test Integration
 
 env:
@@ -10,24 +11,24 @@ env:
 on:
   push:
     paths:
-      - ".github/workflows/test-integration.yml"
-      - "Taskfile.yml"
+      - ".github/workflows/test-go-integration-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
       - "go.mod"
       - "go.sum"
       - "poetry.lock"
       - "pyproject.toml"
-      - "test/**"
+      - "tests/**"
   pull_request:
     paths:
-      - ".github/workflows/test-integration.yml"
-      - "Taskfile.yml"
+      - ".github/workflows/test-go-integration-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
       - "go.mod"
       - "go.sum"
       - "poetry.lock"
       - "pyproject.toml"
-      - "test/**"
+      - "tests/**"
   workflow_dispatch:
   repository_dispatch:
 
@@ -52,7 +53,7 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
 
-      - name: Install Taskfile
+      - name: Install Task
         uses: arduino/setup-task@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
