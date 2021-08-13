@@ -8,17 +8,17 @@ env:
 on:
   push:
     paths:
-      - ".github/workflows/check-go-task.yml"
-      - "Taskfile.yml"
       - "go.mod"
       - "go.sum"
+      - ".github/workflows/check-go-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
   pull_request:
     paths:
-      - ".github/workflows/check-go-task.yml"
-      - "Taskfile.yml"
       - "go.mod"
       - "go.sum"
+      - ".github/workflows/check-go-task.ya?ml"
+      - "Taskfile.ya?ml"
       - "**.go"
   schedule:
     # Run every Tuesday at 8 AM UTC to catch breakage caused by changes to tools.
