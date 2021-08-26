@@ -103,7 +103,7 @@ index cff484d..9f67763 100644
 	assert.Equal(t, "submission", requestType, testName)
 	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "submit", arduinoLintLibraryManagerSetting, testName)
-	assert.ElementsMatch(t, submissionURLs, []string{"https://github.com/foo/bar", "https://github.com/foo/baz"}, testName)
+	assert.ElementsMatch(t, []string{"https://github.com/foo/bar", "https://github.com/foo/baz"}, submissionURLs, testName)
 
 	testName = "Submission w/ no newline at end of file"
 	diff = []byte(`
@@ -137,7 +137,7 @@ index cff484d..1b0b80b 100644
 	assert.Equal(t, "submission", requestType, testName)
 	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "submit", arduinoLintLibraryManagerSetting, testName)
-	assert.ElementsMatch(t, submissionURLs, []string{"https://github.com/foo/bar"}, testName)
+	assert.ElementsMatch(t, []string{"https://github.com/foo/bar"}, submissionURLs, testName)
 
 	testName = "Removal"
 	diff = []byte(`
@@ -170,7 +170,27 @@ index cff484d..8b401a1 100644
 	assert.Equal(t, "modification", requestType, testName)
 	assert.Equal(t, "", requestError, testName)
 	assert.Equal(t, "update", arduinoLintLibraryManagerSetting, testName)
-	assert.Equal(t, submissionURLs, []string{"https://github.com/foo/bar"}, testName)
+	assert.Equal(t, []string{"https://github.com/foo/bar"}, submissionURLs, testName)
+
+	testName = "Newline-only"
+	diff = []byte(`
+diff --git a/repositories.txt b/repositories.txt
+index d9a6136..ca902d9 100644
+--- a/repositories.txt
++++ b/repositories.txt
+@@ -1,4 +1,4 @@
+	https://github.com/firmata/arduino
+-
+	https://github.com/arduino-libraries/Ethernet
+	https://github.com/lbernstone/plotutils
++
+`)
+
+	requestType, requestError, arduinoLintLibraryManagerSetting, submissionURLs = parseDiff(diff, "repositories.txt")
+	assert.Equal(t, "other", requestType, testName)
+	assert.Equal(t, "", requestError, testName)
+	assert.Equal(t, "", arduinoLintLibraryManagerSetting, testName)
+	assert.Nil(t, submissionURLs, testName)
 }
 
 func Test_normalizeURL(t *testing.T) {

@@ -223,7 +223,9 @@ func parseDiff(rawDiff []byte, listName string) (string, string, string, []strin
 
 	var requestType string
 	var arduinoLintLibraryManagerSetting string
-	if addedCount > 0 && deletedCount == 0 {
+	if addedCount == 0 && deletedCount == 0 {
+		requestType = "other"
+	} else if addedCount > 0 && deletedCount == 0 {
 		requestType = "submission"
 		arduinoLintLibraryManagerSetting = "submit"
 	} else if addedCount == 0 && deletedCount > 0 {
