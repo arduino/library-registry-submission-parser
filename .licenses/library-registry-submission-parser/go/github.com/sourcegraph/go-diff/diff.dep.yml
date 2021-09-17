@@ -4,7 +4,7 @@ version: v0.6.1
 type: go
 summary: Package diff provides a parser for unified diffs.
 homepage: https://pkg.go.dev/github.com/sourcegraph/go-diff/diff
-license: other
+license: mit
 licenses:
 - sources: go-diff@v0.6.1/LICENSE
   text: |
