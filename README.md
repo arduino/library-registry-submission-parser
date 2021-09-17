@@ -7,6 +7,7 @@
 [![Check Python status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-python-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-python-task.yml)
 [![Check Prettier Formatting status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-prettier-formatting-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-prettier-formatting-task.yml)
 [![Spell Check status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/spell-check-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/spell-check-task.yml)
+[![Check Go Dependencies status](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-go-dependencies-task.yml/badge.svg)](https://github.com/arduino/library-registry-submission-parser/actions/workflows/check-go-dependencies-task.yml)
 
 This is the tool used to parse submissions to [the Arduino Library Manager registry](https://github.com/arduino/library-registry).
 
