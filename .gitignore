@@ -1,5 +1,6 @@
 # Build artifacts
-parser
+/parser
+!/parser/
 parser.exe
 
 # Test artifacts
