@@ -158,9 +158,9 @@ func main() {
 	req.IndexerLogsURLs = strings.Join(indexerLogsURLs, "%0A")
 
 	// Marshal the request data into a JSON document.
-	var marshalledRequest bytes.Buffer
-	jsonEncoder := json.NewEncoder(io.Writer(&marshalledRequest))
-	// By default, the json package HTML-sanitizes strings during marshalling (https://golang.org/pkg/encoding/json/#Marshal)
+	var marshaledRequest bytes.Buffer
+	jsonEncoder := json.NewEncoder(io.Writer(&marshaledRequest))
+	// By default, the json package HTML-sanitizes strings during marshaling (https://golang.org/pkg/encoding/json/#Marshal)
 	// It's not possible to change this behavior when using the simple json.MarshalIndent() approach.
 	jsonEncoder.SetEscapeHTML(false)
 	jsonEncoder.SetIndent("", "") // Single line.
@@ -169,7 +169,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(marshalledRequest.String())
+	fmt.Println(marshaledRequest.String())
 }
 
 // errorExit prints the error message in a standardized format and exits with status 1.
