@@ -435,7 +435,10 @@ func uRLIsUnder(childURL url.URL, parentCandidates []string) bool {
 		childURLPath := paths.New(childURL.Path)
 		candidateURLPath := paths.New(parentCandidateURL.Path)
 
-		isUnderPath := childURLPath.IsInsideDir(candidateURLPath)
+		isUnderPath, err := childURLPath.IsInsideDir(candidateURLPath)
+		if err != nil {
+			panic(err)
+		}
 
 		if (childURL.Host == parentCandidateURL.Host) && (childURLPath.EqualsTo(candidateURLPath) || isUnderPath) {
 			return true
