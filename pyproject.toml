@@ -11,7 +11,7 @@ python = "^3.9"
 black = "^23.3"
 flake8 = "^6.0.0"
 pep8-naming = "^0.13.3"
-codespell = "^2.2.4"
+codespell = "^2.2.5"
 pytest = "7.3.2"
 invoke = "2.1.3"
 
