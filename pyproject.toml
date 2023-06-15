@@ -13,7 +13,7 @@ flake8 = "^6.0.0"
 pep8-naming = "^0.13.3"
 codespell = "^2.2.4"
 pytest = "7.3.2"
-invoke = "2.1.2"
+invoke = "2.1.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
