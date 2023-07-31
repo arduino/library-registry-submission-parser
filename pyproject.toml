@@ -9,7 +9,7 @@ python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 black = "^23.7"
-flake8 = "^6.0.0"
+flake8 = "^6.1.0"
 pep8-naming = "^0.13.3"
 codespell = "^2.2.5"
 pytest = "7.4.0"
