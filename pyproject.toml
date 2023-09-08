@@ -12,7 +12,7 @@ black = "^23.7"
 flake8 = "^6.1.0"
 pep8-naming = "^0.13.3"
 codespell = "^2.2.5"
-pytest = "7.4.1"
+pytest = "7.4.2"
 invoke = "2.2.0"
 
 [build-system]
