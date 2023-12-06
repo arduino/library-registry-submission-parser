@@ -1,6 +1,6 @@
 github.com/arduino/go-paths-helper v1.0.1/go.mod h1:HpxtKph+g238EJHq4geEPv9p+gl3v5YYu35Yb+w31Ck=
-github.com/arduino/go-paths-helper v1.9.2 h1:omR8DPTL4nbUCWfGey5D+e3WvWfA2zEgoM6ZBRNt7ls=
-github.com/arduino/go-paths-helper v1.9.2/go.mod h1:V82BWgAAp4IbmlybxQdk9Bpkz8M4Qyx+RAFKaG9NuvU=
+github.com/arduino/go-paths-helper v1.10.0 h1:oeE6Mcl4lsz+knC3lzaCWkRQa3n3FbwdRSeGhy6uGbM=
+github.com/arduino/go-paths-helper v1.10.0/go.mod h1:LgEVnv+cqSl05vXD5LaUZGquDsX5OKmPNDJtjTL8928=
 github.com/arduino/go-properties-orderedmap v1.8.0 h1:wEfa6hHdpezrVOh787OmClsf/Kd8qB+zE3P2Xbrn0CQ=
 github.com/arduino/go-properties-orderedmap v1.8.0/go.mod h1:DKjD2VXY/NZmlingh4lSFMEYCVubfeArCsGPGDwb2yk=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -22,8 +22,8 @@ github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpE
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
-github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
-github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
+github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
+github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
