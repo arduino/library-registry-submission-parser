@@ -6,7 +6,7 @@ require (
 	github.com/arduino/go-paths-helper v1.12.0
 	github.com/arduino/go-properties-orderedmap v1.8.0
 	github.com/sourcegraph/go-diff v0.7.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (
