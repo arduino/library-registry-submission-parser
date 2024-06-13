@@ -6,6 +6,8 @@ updates:
   # See: https://docs.github.com/en/github/administering-a-repository/keeping-your-actions-up-to-date-with-dependabot
   - package-ecosystem: github-actions
     directory: / # Check the repository's workflows under /.github/workflows/
+    assignees:
+      - per1234
     schedule:
       interval: daily
     labels:
@@ -13,6 +15,8 @@ updates:
   # Go dependencies
   - package-ecosystem: gomod
     directory: /
+    assignees:
+      - per1234
     schedule:
       interval: daily
     labels:
@@ -20,6 +24,8 @@ updates:
   # Python dependencies
   - package-ecosystem: pip
     directory: /
+    assignees:
+      - per1234
     schedule:
       interval: daily
     labels:
