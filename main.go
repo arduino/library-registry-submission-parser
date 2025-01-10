@@ -34,6 +34,7 @@ import (
 	"strings"
 
 	"github.com/sourcegraph/go-diff/diff"
+	"gopkg.in/yaml.v3"
 
 	"github.com/arduino/go-paths-helper"
 	properties "github.com/arduino/go-properties-orderedmap"
@@ -67,6 +68,29 @@ var recommendedOrganizations []string = []string{
 	"github.com/adafruit",
 }
 
+// accessType is the type of the access control level.
+type accessType string
+
+const (
+	// Allow allows unrestricted access. The entity can make requests even for library repositories whose owner is denied
+	// access.
+	Allow accessType = "allow"
+	// Default gives default access. The entity can make requests as long as the owner of the library's repository is not
+	// denied access.
+	Default = "default"
+	// Deny denies all access. The entity is not permitted to make requests, and registration of libraries from
+	// repositories they own is not permitted.
+	Deny = "deny"
+)
+
+// accessDataType is the type of the access control data.
+type accessDataType struct {
+	Access    accessType `yaml:"access"`    // Access level.
+	Host      string     `yaml:"host"`      // Account host (e.g., `github.com`).
+	Name      string     `yaml:"name"`      // User or organization account name.
+	Reference string     `yaml:"reference"` // URL that provides additional information about the access control entry.
+}
+
 // request is the type of the request data.
 type request struct {
 	Type                             string           `json:"type"`                             // Request type.
@@ -89,13 +113,22 @@ type submissionType struct {
 }
 
 // Command line flags.
+// Path of the access control file, relative to repopath.
+var accesslistArgument = flag.String("accesslist", "", "")
 var diffPathArgument = flag.String("diffpath", "", "")
 var repoPathArgument = flag.String("repopath", "", "")
 var listNameArgument = flag.String("listname", "", "")
 
+// GitHub username of the user making the submission.
+var submitterArgument = flag.String("submitter", "", "")
+
 func main() {
 	// Validate flag input.
 	flag.Parse()
+
+	if *accesslistArgument == "" {
+		errorExit("--accesslist flag is required")
+	}
 
 	if *diffPathArgument == "" {
 		errorExit("--diffpath flag is required")
@@ -109,8 +142,18 @@ func main() {
 		errorExit("--listname flag is required")
 	}
 
+	if *submitterArgument == "" {
+		errorExit("--submitter flag is required")
+	}
+
+	accesslistPath := paths.New(*repoPathArgument, *accesslistArgument)
+	exist, err := accesslistPath.ExistCheck()
+	if !exist {
+		errorExit("Access control file not found")
+	}
+
 	diffPath := paths.New(*diffPathArgument)
-	exist, err := diffPath.ExistCheck()
+	exist, err = diffPath.ExistCheck()
 	if !exist {
 		errorExit("diff file not found")
 	}
@@ -121,23 +164,59 @@ func main() {
 		errorExit(fmt.Sprintf("list file %s not found", listPath))
 	}
 
-	// Parse the PR diff.
-	rawDiff, err := diffPath.ReadFile()
+	rawAccessList, err := accesslistPath.ReadFile()
 	if err != nil {
 		panic(err)
 	}
+
+	// Unmarshal access control file.
+	var accessList []accessDataType
+	err = yaml.Unmarshal(rawAccessList, &accessList)
+	if err != nil {
+		errorExit(fmt.Sprintf("Access control file has invalid format:\n\n%s", err))
+	}
+
 	var req request
 	var submissionURLs []string
-	req.Type, req.Error, req.ArduinoLintLibraryManagerSetting, submissionURLs = parseDiff(rawDiff, *listNameArgument)
+
+	// Determine access level of submitter.
+	var submitterAccess accessType = Default
+	for _, accessData := range accessList {
+		if accessData.Host == "github.com" && *submitterArgument == accessData.Name {
+			submitterAccess = accessData.Access
+			if submitterAccess == Deny {
+				req.Type = "declined"
+				req.Error = fmt.Sprintf("Library registry privileges for @%s have been revoked.%%0ASee: %s", *submitterArgument, accessData.Reference)
+			}
+			break
+		}
+	}
+
+	if req.Error == "" {
+		// Parse the PR diff.
+		rawDiff, err := diffPath.ReadFile()
+		if err != nil {
+			panic(err)
+		}
+		req.Type, req.Error, req.ArduinoLintLibraryManagerSetting, submissionURLs = parseDiff(rawDiff, *listNameArgument)
+	}
 
 	// Process the submissions.
 	var indexEntries []string
 	var indexerLogsURLs []string
+	allowedSubmissions := false
 	for _, submissionURL := range submissionURLs {
-		submission, indexEntry := populateSubmission(submissionURL, listPath)
+		submission, indexEntry, allowed := populateSubmission(submissionURL, listPath, accessList, submitterAccess)
 		req.Submissions = append(req.Submissions, submission)
 		indexEntries = append(indexEntries, indexEntry)
 		indexerLogsURLs = append(indexerLogsURLs, indexerLogsURL(submission.NormalizedURL))
+		if allowed {
+			allowedSubmissions = true
+		}
+	}
+	if len(submissionURLs) > 0 && !allowedSubmissions {
+		// If none of the submissions are allowed, decline the request.
+		req.Type = "declined"
 	}
 
 	// Check for duplicates within the submission itself.
@@ -240,7 +319,7 @@ func parseDiff(rawDiff []byte, listName string) (string, string, string, []strin
 }
 
 // populateSubmission does the checks on the submission that aren't provided by Arduino Lint and gathers the necessary data on it.
-func populateSubmission(submissionURL string, listPath *paths.Path) (submissionType, string) {
+func populateSubmission(submissionURL string, listPath *paths.Path, accessList []accessDataType, submitterAccess accessType) (submissionType, string, bool) {
 	indexSourceSeparator := "|"
 	var submission submissionType
 
@@ -250,18 +329,18 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	submissionURLObject, err := url.Parse(submission.SubmissionURL)
 	if err != nil {
 		submission.Error = fmt.Sprintf("Invalid submission URL (%s)", err)
-		return submission, ""
+		return submission, "", true
 	}
 
 	// Check if URL is accessible.
 	httpResponse, err := http.Get(submissionURLObject.String())
 	if err != nil {
 		submission.Error = fmt.Sprintf("Unable to load submission URL: %s", err)
-		return submission, ""
+		return submission, "", true
 	}
 	if httpResponse.StatusCode != http.StatusOK {
 		submission.Error = "Unable to load submission URL. Is the repository public?"
-		return submission, ""
+		return submission, "", true
 	}
 
 	// Resolve redirects and normalize.
@@ -269,10 +348,21 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 
 	submission.NormalizedURL = normalizedURLObject.String()
 
+	if submitterAccess != Allow {
+		// Check library repository owner access.
+		for _, accessData := range accessList {
+			ownerSlug := fmt.Sprintf("%s/%s", accessData.Host, accessData.Name)
+			if accessData.Access == Deny && uRLIsUnder(normalizedURLObject, []string{ownerSlug}) {
+				submission.Error = fmt.Sprintf("Library registry privileges for library repository owner `%s` have been revoked.%%0ASee: %s", ownerSlug, accessData.Reference)
+				return submission, "", false
+			}
+		}
+	}
+
 	// Check if URL is from a supported Git host.
 	if !uRLIsUnder(normalizedURLObject, supportedHosts) {
 		submission.Error = fmt.Sprintf("`%s` is not currently supported as a Git hosting website for Library Manager.%%0A%%0ASee: https://github.com/arduino/library-registry/blob/main/FAQ.md#what-are-the-requirements-for-a-library-to-be-added-to-library-manager", normalizedURLObject.Host)
-		return submission, ""
+		return submission, "", true
 	}
 
 	// Check if URL is a Git repository
@@ -280,7 +370,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	if err != nil {
 		if _, ok := err.(*exec.ExitError); ok {
 			submission.Error = "Submission URL is not a Git clone URL (e.g., `https://github.com/arduino-libraries/Servo`)."
-			return submission, ""
+			return submission, "", true
 		}
 
 		panic(err)
@@ -299,7 +389,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 		normalizedListURLObject := normalizeURL(listURLObject)
 		if normalizedListURLObject.String() == normalizedURLObject.String() {
 			submission.Error = "Submission URL is already in the Library Manager index."
-			return submission, ""
+			return submission, "", true
 		}
 	}
 
@@ -344,7 +434,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	}
 	if string(tagList) == "" {
 		submission.Error = "The repository has no tags. You need to create a [release](https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) or [tag](https://git-scm.com/docs/git-tag) that matches the `version` value in the library's library.properties file."
-		return submission, ""
+		return submission, "", true
 	}
 	latestTag, err := exec.Command("git", "describe", "--tags", strings.TrimSpace(string(tagList))).Output()
 	if err != nil {
@@ -362,18 +452,18 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 	libraryPropertiesPath := submissionClonePath.Join("library.properties")
 	if !libraryPropertiesPath.Exist() {
 		submission.Error = "Library is missing a library.properties metadata file.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
-		return submission, ""
+		return submission, "", true
 	}
 	libraryProperties, err := properties.LoadFromPath(libraryPropertiesPath)
 	if err != nil {
 		submission.Error = fmt.Sprintf("Invalid library.properties file: %s%%0A%%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata", err)
-		return submission, ""
+		return submission, "", true
 	}
 	var ok bool
 	submission.Name, ok = libraryProperties.GetOk("name")
 	if !ok {
 		submission.Error = "library.properties is missing a name field.%0A%0ASee: https://arduino.github.io/arduino-cli/latest/library-specification/#library-metadata"
-		return submission, ""
+		return submission, "", true
 	}
 
 	// Assemble Library Manager index source entry string
@@ -386,7 +476,7 @@ func populateSubmission(submissionURL string, listPath *paths.Path) (submissionT
 		indexSourceSeparator,
 	)
 
-	return submission, indexEntry
+	return submission, indexEntry, true
 }
 
 // normalizeURL converts the URL into the standardized format used in the index.

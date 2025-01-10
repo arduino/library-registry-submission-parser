@@ -1,0 +1,4 @@
+- host: github.com
+  name: sparkfun
+  access: deny
+  reference: https://example.com
