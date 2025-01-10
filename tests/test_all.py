@@ -22,27 +22,61 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
 
 @pytest.mark.parametrize(
     "repopath_folder_name,"
+    "submitter,"
     "expected_type,"
     "expected_error,"
     "expected_submissions,"
     "expected_indexentry,"
     "expected_indexerlogsurls",
     [
-        ("list-deleted-diff", "other", "", None, "", ""),
-        ("multi-file-diff", "other", "", None, "", ""),
-        ("non-list-diff", "other", "", None, "", ""),
-        ("list-rename-diff", "other", "", None, "", ""),
+        (
+            "submitter-access-allow",
+            "AllowUser",
+            "submission",
+            "",
+            [
+                {
+                    "submissionURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library",
+                    "normalizedURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library.git",
+                    "repositoryName": "SparkFun_Ublox_Arduino_Library",
+                    "name": "SparkFun u-blox Arduino Library",
+                    "official": False,
+                    "tag": "v1.8.11",
+                    "error": "",
+                }
+            ],
+            "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library.git|Contributed|SparkFun u-blox Arduino Library"
+            "",
+            "http://downloads.arduino.cc/libraries/logs/github.com/sparkfun/SparkFun_Ublox_Arduino_Library/",
+        ),
+        (
+            "submitter-access-deny",
+            "DenyUser",
+            "declined",
+            "Library registry privileges for @DenyUser have been revoked.%0ASee: https://example.com",
+            None,
+            "",
+            "",
+        ),
+        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
+        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
+        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
+        ("multi-file-diff", "FooUser", "other", "", None, "", ""),
+        ("non-list-diff", "FooUser", "other", "", None, "", ""),
+        ("list-rename-diff", "FooUser", "other", "", None, "", ""),
         (
             "no-final-newline-diff",
+            "FooUser",
             "invalid",
             "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.",
             None,
             "",
             "",
         ),
-        ("removal", "removal", "", None, "", ""),
+        ("removal", "FooUser", "removal", "", None, "", ""),
         (
             "modification",
+            "FooUser",
             "modification",
             "",
             [
@@ -61,6 +95,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "url-error",
+            "FooUser",
             "submission",
             "",
             [
@@ -79,6 +114,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "url-404",
+            "FooUser",
             "submission",
             "",
             [
@@ -96,7 +132,58 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
             "http://downloads.arduino.cc/libraries/logs//",
         ),
         (
+            "all-owner-access-deny",
+            "FooUser",
+            "declined",
+            "",
+            [
+                {
+                    "submissionURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library",
+                    "normalizedURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library.git",
+                    "repositoryName": "",
+                    "name": "",
+                    "official": False,
+                    "tag": "",
+                    "error": "Library registry privileges for library repository owner `github.com/sparkfun` have been"
+                    " revoked.%0ASee: https://example.com",
+                },
+            ],
+            "",
+            "http://downloads.arduino.cc/libraries/logs/github.com/sparkfun/SparkFun_Ublox_Arduino_Library/",
+        ),
+        (
+            "some-owner-access-deny",
+            "FooUser",
+            "submission",
+            "",
+            [
+                {
+                    "submissionURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library",
+                    "normalizedURL": "https://github.com/sparkfun/SparkFun_Ublox_Arduino_Library.git",
+                    "repositoryName": "",
+                    "name": "",
+                    "official": False,
+                    "tag": "",
+                    "error": "Library registry privileges for library repository owner `github.com/sparkfun` have been"
+                    " revoked.%0ASee: https://example.com",
+                },
+                {
+                    "submissionURL": "https://github.com/adafruit/Adafruit_TinyFlash",
+                    "normalizedURL": "https://github.com/adafruit/Adafruit_TinyFlash.git",
+                    "repositoryName": "Adafruit_TinyFlash",
+                    "name": "Adafruit TinyFlash",
+                    "official": False,
+                    "tag": "1.0.4",
+                    "error": "",
+                },
+            ],
+            "%0Ahttps://github.com/adafruit/Adafruit_TinyFlash.git|Recommended|Adafruit TinyFlash",
+            "http://downloads.arduino.cc/libraries/logs/github.com/sparkfun/SparkFun_Ublox_Arduino_Library/%0Ahttp://do"
+            "wnloads.arduino.cc/libraries/logs/github.com/adafruit/Adafruit_TinyFlash/",
+        ),
+        (
             "not-supported-git-host",
+            "FooUser",
             "submission",
             "",
             [
@@ -117,6 +204,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "not-git-clone-url",
+            "FooUser",
             "submission",
             "",
             [
@@ -136,6 +224,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "already-in-library-manager",
+            "FooUser",
             "submission",
             "",
             [
@@ -154,6 +243,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "type-arduino",
+            "FooUser",
             "submission",
             "",
             [
@@ -172,6 +262,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "type-partner",
+            "FooUser",
             "submission",
             "",
             [
@@ -190,6 +281,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "type-recommended",
+            "FooUser",
             "submission",
             "",
             [
@@ -208,6 +300,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "type-contributed",
+            "FooUser",
             "submission",
             "",
             [
@@ -227,6 +320,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "no-tags",
+            "FooUser",
             "submission",
             "",
             [
@@ -247,6 +341,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "no-library-properties",
+            "FooUser",
             "submission",
             "",
             [
@@ -266,6 +361,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         ),
         (
             "duplicates-in-submission",
+            "FooUser",
             "submission",
             "",
             [
@@ -298,17 +394,32 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
 def test_request(
     run_command,
     repopath_folder_name,
+    submitter,
     expected_type,
     expected_error,
     expected_submissions,
     expected_indexentry,
     expected_indexerlogsurls,
 ):
+    accesslist = ".github/workflows/assets/accesslist.yml"
     diffpath = test_data_path.joinpath(repopath_folder_name, "diff.txt")
     repopath = test_data_path.joinpath(repopath_folder_name)
     listname = "repositories.txt"
 
-    result = run_command(cmd=["--diffpath", diffpath, "--repopath", repopath, "--listname", listname])
+    result = run_command(
+        cmd=[
+            "--accesslist",
+            accesslist,
+            "--diffpath",
+            diffpath,
+            "--repopath",
+            repopath,
+            "--listname",
+            listname,
+            "--submitter",
+            submitter,
+        ]
+    )
     assert result.ok
 
     request = json.loads(result.stdout)

@@ -1,0 +1,4 @@
+- host: github.com
+  name: DenyUser
+  access: deny
+  reference: https://example.com
