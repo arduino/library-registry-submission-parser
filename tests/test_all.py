@@ -23,6 +23,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
 @pytest.mark.parametrize(
     "repopath_folder_name,"
     "submitter,"
+    "expected_conclusion,"
     "expected_type,"
     "expected_error,"
     "expected_submissions,"
@@ -32,6 +33,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "submitter-access-allow",
             "AllowUser",
+            "",
             "submission",
             "",
             [
@@ -53,30 +55,33 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
             "submitter-access-deny",
             "DenyUser",
             "declined",
+            "invalid",
             "Library registry privileges for @DenyUser have been revoked.%0ASee: https://example.com",
             None,
             "",
             "",
         ),
-        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
-        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
-        ("list-deleted-diff", "FooUser", "other", "", None, "", ""),
-        ("multi-file-diff", "FooUser", "other", "", None, "", ""),
-        ("non-list-diff", "FooUser", "other", "", None, "", ""),
-        ("list-rename-diff", "FooUser", "other", "", None, "", ""),
+        ("list-deleted-diff", "FooUser", "", "other", "", None, "", ""),
+        ("list-deleted-diff", "FooUser", "", "other", "", None, "", ""),
+        ("list-deleted-diff", "FooUser", "", "other", "", None, "", ""),
+        ("multi-file-diff", "FooUser", "", "other", "", None, "", ""),
+        ("non-list-diff", "FooUser", "", "other", "", None, "", ""),
+        ("list-rename-diff", "FooUser", "", "other", "", None, "", ""),
         (
             "no-final-newline-diff",
             "FooUser",
+            "",
             "invalid",
             "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.",
             None,
             "",
             "",
         ),
-        ("removal", "FooUser", "removal", "", None, "", ""),
+        ("removal", "FooUser", "", "removal", "", None, "", ""),
         (
             "modification",
             "FooUser",
+            "",
             "modification",
             "",
             [
@@ -96,6 +101,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "url-error",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -115,6 +121,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "url-404",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -135,6 +142,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
             "all-owner-access-deny",
             "FooUser",
             "declined",
+            "submission",
             "",
             [
                 {
@@ -154,6 +162,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "some-owner-access-deny",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -184,6 +193,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "not-supported-git-host",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -205,6 +215,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "not-git-clone-url",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -225,6 +236,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "already-in-library-manager",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -244,6 +256,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-arduino",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -263,6 +276,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-partner",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -282,6 +296,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-recommended",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -301,6 +316,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "type-contributed",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -321,6 +337,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "no-tags",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -342,6 +359,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "no-library-properties",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -362,6 +380,7 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
         (
             "duplicates-in-submission",
             "FooUser",
+            "",
             "submission",
             "",
             [
@@ -395,6 +414,7 @@ def test_request(
     run_command,
     repopath_folder_name,
     submitter,
+    expected_conclusion,
     expected_type,
     expected_error,
     expected_submissions,
@@ -423,6 +443,7 @@ def test_request(
     assert result.ok
 
     request = json.loads(result.stdout)
+    assert request["conclusion"] == expected_conclusion
     assert request["type"] == expected_type
     assert request["error"] == expected_error
     assert request["submissions"] == expected_submissions

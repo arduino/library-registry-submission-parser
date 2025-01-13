@@ -93,6 +93,7 @@ type accessDataType struct {
 
 // request is the type of the request data.
 type request struct {
+	Conclusion                       string           `json:"conclusion"`                       // Request conclusion.
 	Type                             string           `json:"type"`                             // Request type.
 	ArduinoLintLibraryManagerSetting string           `json:"arduinoLintLibraryManagerSetting"` // Argument to pass to Arduino Lint's --library-manager flag.
 	Submissions                      []submissionType `json:"submissions"`                      // Data for submitted libraries.
@@ -185,7 +186,8 @@ func main() {
 		if accessData.Host == "github.com" && *submitterArgument == accessData.Name {
 			submitterAccess = accessData.Access
 			if submitterAccess == Deny {
-				req.Type = "declined"
+				req.Conclusion = "declined"
+				req.Type = "invalid"
 				req.Error = fmt.Sprintf("Library registry privileges for @%s have been revoked.%%0ASee: %s", *submitterArgument, accessData.Reference)
 			}
 			break
@@ -216,7 +218,7 @@ func main() {
 	}
 	if len(submissionURLs) > 0 && !allowedSubmissions {
 		// If none of the submissions are allowed, decline the request.
-		req.Type = "declined"
+		req.Conclusion = "declined"
 	}
 
 	// Check for duplicates within the submission itself.
