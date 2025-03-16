@@ -390,7 +390,12 @@ func populateSubmission(submissionURL string, listPath *paths.Path, accessList [
 
 		normalizedListURLObject := normalizeURL(listURLObject)
 		if normalizedListURLObject.String() == normalizedURLObject.String() {
-			submission.Error = "Submission URL is already in the Library Manager index."
+			normalizedSubmissionURLObject := normalizeURL(submissionURLObject)
+			if normalizedURLObject.String() == normalizedSubmissionURLObject.String() {
+				submission.Error = "Submission URL is already in the Library Manager index."
+			} else {
+				submission.Error = fmt.Sprintf("Resolved URL %s is already in the Library Manager index.", normalizedURLObject.String())
+			}
 			return submission, "", true
 		}
 	}

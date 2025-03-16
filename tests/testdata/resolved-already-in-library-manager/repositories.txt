@@ -1,0 +1,2 @@
+https://github.com/arduino-libraries/WiFi_for_UNOWiFi_rev1
+https://github.com/arduino-libraries/Stepper
