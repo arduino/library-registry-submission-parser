@@ -254,6 +254,27 @@ test_data_path = pathlib.Path(__file__).resolve().parent.joinpath("testdata")
             "http://downloads.arduino.cc/libraries/logs/github.com/arduino-libraries/Servo/",
         ),
         (
+            "resolved-already-in-library-manager",
+            "FooUser",
+            "",
+            "submission",
+            "",
+            [
+                {
+                    "submissionURL": "https://github.com/arduino-org/WiFi_for_UNOWiFi_rev1",
+                    "normalizedURL": "https://github.com/arduino-libraries/WiFi_for_UNOWiFi_rev1.git",
+                    "repositoryName": "WiFi_for_UNOWiFi_rev1",
+                    "name": "",
+                    "official": False,
+                    "tag": "",
+                    "error": "Resolved URL https://github.com/arduino-libraries/WiFi_for_UNOWiFi_rev1.git is already in"
+                    " the Library Manager index.",
+                }
+            ],
+            "",
+            "http://downloads.arduino.cc/libraries/logs/github.com/arduino-libraries/WiFi_for_UNOWiFi_rev1/",
+        ),
+        (
             "type-arduino",
             "FooUser",
             "",
