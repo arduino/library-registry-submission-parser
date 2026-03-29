@@ -43,10 +43,10 @@ import (
 // Git hosts that are supported for library repositories.
 var supportedHosts []string = []string{
 	"bitbucket.org",
+	"codeberg.org",
 	"git.antares.id",
 	"github.com",
 	"gitlab.com",
-	"codeberg.org",
 }
 
 // Libraries under these organizations will have the "Arduino" type and be linted with Arduino Lint in the "official" setting.
