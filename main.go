@@ -46,7 +46,7 @@ var supportedHosts []string = []string{
 	"git.antares.id",
 	"github.com",
 	"gitlab.com",
-  "codeberg.org",
+	"codeberg.org",
 }
 
 // Libraries under these organizations will have the "Arduino" type and be linted with Arduino Lint in the "official" setting.
