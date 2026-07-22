@@ -43,6 +43,7 @@ import (
 // Git hosts that are supported for library repositories.
 var supportedHosts []string = []string{
 	"bitbucket.org",
+	"codeberg.org",
 	"git.antares.id",
 	"github.com",
 	"gitlab.com",
