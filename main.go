@@ -284,7 +284,7 @@ func parseDiff(rawDiff []byte, listName string) (string, string, string, []strin
 	// Get the added URLs from the diff
 	for _, hunk := range diffs[0].Hunks {
 		hunkBody := string(hunk.Body)
-		for _, rawDiffLine := range strings.Split(hunkBody, "\n") {
+		for rawDiffLine := range strings.SplitSeq(hunkBody, "\n") {
 			diffLine := strings.TrimRight(rawDiffLine, " \t")
 			if len(diffLine) < 2 {
 				continue // Ignore blank lines.
