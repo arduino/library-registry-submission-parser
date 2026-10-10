@@ -12,6 +12,7 @@ updates:
     schedule:
       interval: daily
     labels:
+      - "topic: dependencies"
       - "topic: infrastructure"
   # Go dependencies
   - package-ecosystem: gomod
@@ -22,7 +23,7 @@ updates:
     schedule:
       interval: daily
     labels:
-      - "topic: infrastructure"
+      - "topic: dependencies"
   # Python dependencies
   - package-ecosystem: pip
     directory: /
@@ -32,4 +33,5 @@ updates:
     schedule:
       interval: daily
     labels:
+      - "topic: dependencies"
       - "topic: infrastructure"
