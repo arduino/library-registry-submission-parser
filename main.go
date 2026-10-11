@@ -263,29 +263,36 @@ func errorExit(message string) {
 func parseDiff(rawDiff []byte, listName string) (string, string, string, []string) {
 	var submissionURLs []string
 
-	// Check if the PR has removed the final newline from a file, which would cause a spurious diff for the next PR if merged.
-	// Unfortunately, the diff package does not have this capability (only to detect missing newline in the original file).
+	// Check whether the final newline was removed.
 	if bytes.Contains(rawDiff, []byte("\\ No newline at end of file")) {
 		return "invalid", "Pull request removes newline from the end of a file.%0APlease add a blank line to the end of the file.", "", nil
 	}
 
-	diffs, err := diff.ParseMultiFileDiff(rawDiff)
+	// Preserve carriage returns so CRLF additions can be detected.
+	diffs, err := diff.ParseMultiFileDiffOptions(rawDiff, diff.ParseOptions{KeepCR: true})
 	if err != nil {
 		panic(err)
 	}
 
-	if (len(diffs) != 1) || (diffs[0].OrigName[2:] != listName) || (diffs[0].OrigName[2:] != diffs[0].NewName[2:]) { // Git diffs have a a/ or b/ prefix on file names.
+	if (len(diffs) != 1) || (diffs[0].OrigName[2:] != listName) || (diffs[0].OrigName[2:] != diffs[0].NewName[2:]) {
 		// This is not a Library Manager submission.
 		return "other", "", "", nil
 	}
 
 	var addedCount int
 	var deletedCount int
-	// Get the added URLs from the diff
+
+	// Get the added URLs from the diff.
 	for _, hunk := range diffs[0].Hunks {
 		hunkBody := string(hunk.Body)
 		for rawDiffLine := range strings.SplitSeq(hunkBody, "\n") {
-			diffLine := strings.TrimRight(rawDiffLine, " \t")
+			// Check added lines before trimming whitespace or ignoring blank lines.
+			if strings.HasPrefix(rawDiffLine, "+") && strings.HasSuffix(rawDiffLine, "\r") {
+				return "invalid", "Pull request adds lines with CRLF line endings.%0APlease use LF line endings.", "", nil
+			}
+
+			// Preserve the existing handling of whitespace on removed and context lines.
+			diffLine := strings.TrimRight(rawDiffLine, " \t\r")
 			if len(diffLine) < 2 {
 				continue // Ignore blank lines.
 			}
