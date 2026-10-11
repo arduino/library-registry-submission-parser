@@ -256,3 +256,80 @@ func Test_uRLIsUnder(t *testing.T) {
 		})
 	}
 }
+
+func Test_parseDiffLineEndings(t *testing.T) {
+	const diffHeader = `diff --git a/repositories.txt b/repositories.txt
+index cff484d..9f67763 100644
+--- a/repositories.txt
++++ b/repositories.txt
+`
+	const newlineError = "Pull request adds lines with CRLF line endings.%0APlease use LF line endings."
+
+	tests := []struct {
+		name        string
+		hunk        string
+		wantType    string
+		wantError   string
+		wantSetting string
+		wantURLs    []string
+	}{
+		{
+			"LF submission",
+			"@@ -1,0 +2 @@\n+https://github.com/foo/bar\n",
+			"submission", "", "submit", []string{"https://github.com/foo/bar"},
+		},
+		{
+			"CRLF submission",
+			"@@ -1,0 +2 @@\n+https://github.com/foo/bar\r\n",
+			"invalid", newlineError, "", nil,
+		},
+		{
+			"Mixed LF and CRLF additions",
+			"@@ -1,0 +2,2 @@\n+https://github.com/foo/bar\n+https://github.com/foo/baz\r\n",
+			"invalid", newlineError, "", nil,
+		},
+		{
+			"CRLF blank addition",
+			"@@ -1,0 +2,2 @@\n+https://github.com/foo/bar\n+\r\n",
+			"invalid", newlineError, "", nil,
+		},
+		{
+			"CRLF addition with trailing whitespace",
+			"@@ -1,0 +2 @@\n+https://github.com/foo/bar \t\r\n",
+			"invalid", newlineError, "", nil,
+		},
+		{
+			"CRLF context with LF addition",
+			"@@ -1 +1,2 @@\n https://github.com/foo/existing\r\n+https://github.com/foo/bar\n",
+			"submission", "", "submit", []string{"https://github.com/foo/bar"},
+		},
+		{
+			"Removal of existing CRLF line",
+			"@@ -1 +0,0 @@\n-https://github.com/foo/bar\r\n",
+			"removal", "", "", nil,
+		},
+		{
+			"Correction of CRLF to LF",
+			"@@ -1 +1 @@\n-https://github.com/foo/bar\r\n+https://github.com/foo/bar\n",
+			"modification", "", "update", []string{"https://github.com/foo/bar"},
+		},
+		{
+			"Removal of CRLF blank line with LF addition",
+			"@@ -1 +1 @@\n-\r\n+https://github.com/foo/bar\n",
+			"submission", "", "submit", []string{"https://github.com/foo/bar"},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			requestType, requestError, setting, submissionURLs := parseDiff(
+				[]byte(diffHeader+tc.hunk), "repositories.txt",
+			)
+
+			assert.Equal(t, tc.wantType, requestType)
+			assert.Equal(t, tc.wantError, requestError)
+			assert.Equal(t, tc.wantSetting, setting)
+			assert.Equal(t, tc.wantURLs, submissionURLs)
+		})
+	}
+}
